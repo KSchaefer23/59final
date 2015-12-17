@@ -665,9 +665,9 @@ class Lobster {
         arc(x+20, y-21, 15, 30, 0-QUARTER_PI, PI+HALF_PI, PIE);      // Top claw closed
         arc(x+20, y+21, 15, 30, HALF_PI, TWO_PI+QUARTER_PI, PIE);    // Bottom claw closed
       }
-      triangle(x-25, y, x-45, y-12, x-45, y+12);    // Tail
+      triangle(x-25, y, x-45, y-12, x-45, y+12);                     // Tail
       fill(0);
-      ellipse(x+28, y-3, 3, 3);                     // Eyes
+      ellipse(x+28, y-3, 3, 3);                                      // Eyes
       ellipse(x+28, y+3, 3, 3);
     }
     // LOBSTER FACING LEFT DIRECTION
@@ -680,9 +680,9 @@ class Lobster {
         arc(x-20, y-21, 15, 30, 0-HALF_PI, PI+QUARTER_PI, PIE);      // Top claw closed
         arc(x-20, y+21, 15, 30, PI-QUARTER_PI, TWO_PI+HALF_PI, PIE); // Bottom claw closed
       }
-      triangle(x+25, y, x+45, y-12, x+45, y+12);    // Tail      
+      triangle(x+25, y, x+45, y-12, x+45, y+12);                     // Tail      
       fill(0);
-      ellipse(x-28, y-3, 3, 3);                     // Eyes
+      ellipse(x-28, y-3, 3, 3);                                      // Eyes
       ellipse(x-28, y+3, 3, 3);
     }
     fill(255);
@@ -691,6 +691,6 @@ class Lobster {
   }    
   // Return true if near
   boolean hit( float xx, float yy ) {
-    return dist( xx, yy, x, y ) < 12;
+    return dist( xx, yy, x, y ) < 25;
   }
 }
