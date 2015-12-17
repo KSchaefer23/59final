@@ -239,6 +239,7 @@ void draw() {
   showButton(width-125, 15, 100, 30);
   // Shows (x,y) values when click button or '$' pressed
   if ( (key == '$') || (mouseClicked == true) ) {
+    moonX=0; // Stops the moving moon
     fill(255, 200, 200, 210);    
     rect(width/3, height/80, 300, 100);
     fill(255, 255, 255);
@@ -265,6 +266,7 @@ void draw() {
   }
   // Shows report if any caps key pressed
   else if (key >= 'A' && key <= 'Z') {
+    moonX=0; // Stops the moving moon
     boatReport(120, fleet, fleet.length);
     squidReport(220, school, school.length);
     lobsterReport(320, kfs, kfs.length);
@@ -287,16 +289,16 @@ void messages() {
   textSize(13);
 
   // Boat Report Key Instructions
-  text( "Hold B key to show boats in position order", 30, 40 );
-  text( "Hold D key to show boats in speed order (from + to -)", 30, 55 );
-  text( "Hold F key to show boats in cargo order", 30, 70 );
+  text( "Hold B key to show boats in position order", 25, 40 );
+  text( "Hold D key to show boats in speed order (from + to -)", 25, 55 );
+  text( "Hold F key to show boats in cargo order", 25, 70 );
   // Squid Report Key Instructions
   text( "Hold X key to show squid in position order", width/2, 55 );
   text( "Hold Y key to show squid in height order", width/2, 70 );
   text( "Hold S key to show squid in speed order (from - to +)", width/2, 85 );
   text( "Hold L key to show squid in leg number order", width/2, 100 );
   // Lobster Report Key Instructions
-  text( "Hold $ key to show highest and lowest lobster positions", 30, 100);
+  text( "Hold $ key to show highest and lowest lobster positions", 25, 100);
 
   // Display score (when not zero)
   if (score>0) text( "SCORE:  "+score, width*0.6, 20 );
