@@ -3,15 +3,15 @@
 
 //// Declare and initialize
 int many=5;
-// Squid array and names
-Squid school[]=  new Squid[many];
-String names[]= { 
-  "One", "Two", "Red", "Blue", "Fish"
-};
 // Boat array and names
 Boat fleet[]= new Boat[many];
 String boatNames[]= {
   "Jenny", "Penny", "XPenny", "Minnow", "Mimi"
+};
+// Squid array and names
+Squid school[]=  new Squid[many];
+String names[]= { 
+  "One", "Two", "Red", "Blue", "Fish"
 };
 // Lobster array and names
 Lobster kfs[]= new Lobster[many];
@@ -28,7 +28,6 @@ boolean mouseClicked = false;
 //// Size & reset
 void setup() {
   size( 800, 600 );
-  //size( 1000, 800 );  
   spacing=  width/(many+1);  
   reset();
 }
@@ -137,7 +136,7 @@ void sortSquidL(Squid[] a, int many) {
 }
 
 //// Iterate and sort value functions for Lobster
-// Sorts the squids by X positions
+// Sorts the lobsters by X positions
 void sortLobsterX(Lobster[] a, int many) {
   for (int m = many; m > 1; m--) {
     int k = 0;
@@ -147,7 +146,7 @@ void sortLobsterX(Lobster[] a, int many) {
     swapLobster(a, m-1, k);
   }
 }
-// Sorts the squids by Y positions
+// Sorts the lobsters by Y positions
 void sortLobsterY(Lobster[] a, int many) {
   for (int m = many; m > 1; m--) {
     int k = 0;
@@ -243,7 +242,7 @@ void draw() {
     fill(255, 200, 200, 210);    
     rect(width/3, height/80, 300, 100);
     fill(255, 255, 255);
-    text("Click anywhere on screen to resume.", width/2.5, height/2);
+    text("(Release $ key or click anywhere on screen to resume.)", width/3.5, height/2);
     fill(0);
 
     sortLobsterY(kfs, kfs.length);   // Run the sort by Y function to get HI/LO
@@ -266,9 +265,9 @@ void draw() {
   }
   // Shows report if any caps key pressed
   else if (key >= 'A' && key <= 'Z') {
-    boatReport(100, fleet, fleet.length);
-    squidReport(200, school, school.length);
-    lobsterReport(300, kfs, kfs.length);
+    boatReport(120, fleet, fleet.length);
+    squidReport(220, school, school.length);
+    lobsterReport(320, kfs, kfs.length);
     messages();
   }
   // Only runs action if prior conditions not met  
@@ -283,18 +282,21 @@ void messages() {
   fill(255, 255, 255);
   textSize( 20 );
   text( "Gone Fishin'", width/2.5, 20 );  // Title
-  textSize(12);
+  textSize(16);
   text( "Kevin Schaefer", 15, height-10); // Name
+  textSize(13);
 
   // Boat Report Key Instructions
-  text( "Hold B key to show boats in position order", 50, 40 );
-  text( "Hold D key to show boats in speed order (from + to -)", 50, 55 );
-  text( "Hold F key to show boats in cargo order", 50, 70 );
+  text( "Hold B key to show boats in position order", 30, 40 );
+  text( "Hold D key to show boats in speed order (from + to -)", 30, 55 );
+  text( "Hold F key to show boats in cargo order", 30, 70 );
   // Squid Report Key Instructions
-  text( "Hold X key to show squid in position order", width/2, 40 );
-  text( "Hold Y key to show squid in height order", width/2, 55 );
-  text( "Hold S key to show squid in speed order (from + to -)", width/2, 70 );
-  text( "Hold L key to show squid in leg number order", width/2, 85 );
+  text( "Hold X key to show squid in position order", width/2, 55 );
+  text( "Hold Y key to show squid in height order", width/2, 70 );
+  text( "Hold S key to show squid in speed order (from - to +)", width/2, 85 );
+  text( "Hold L key to show squid in leg number order", width/2, 100 );
+  // Lobster Report Key Instructions
+  text( "Hold $ key to show highest and lowest lobster positions", 30, 100);
 
   // Display score (when not zero)
   if (score>0) text( "SCORE:  "+score, width*0.6, 20 );
@@ -583,10 +585,10 @@ class Boat {
     if (x<0) {
       score += cargo;            // Add cargo to global score
       cargo=0;
-      dx = random( 1, 3 );       // Variable boat speed
+      dx = random( 1, 3 );       // Boat moves right after hitting left boundary
     }    
     if (x>width) {
-      dx = -random( 0.5, 3 );    // Slower return
+      dx = -random( 0.5, 3 );    // Boat moves left after hitting right boundary
     }
   }  
 
@@ -595,11 +597,11 @@ class Boat {
     fill(255, 130, 0);
     noStroke();
     rect( x, surface-20, 50, 20 );         // Boat body
-    // Boat facing right direction
+    // When boat facing right direction
     if (dx>0) { 
       triangle( x+50, surface, x+50, surface-20, x+70, surface-20 );
     }
-    // Boat facing left direction
+    // When boat facing left direction
     else {      
       triangle( x, surface, x, surface-20, x-20, surface-20 );
     }
@@ -624,17 +626,18 @@ class Lobster {
   // Assign name, random x and dx
   Lobster(String s) {
     this.name=  s;
-    x = 0;
-    y = random((surface+height)/2, height);
-    dx = random(0, 3);
-    dy = random(-3, 0);
+    x = 0;                                    // Start on left side
+    y = random((surface+height)/2, height);   // Start in lower half of water
+    dx = random(0, 3);                        // Moving in right direction
+    dy = random(-3, 0);                       // Moving upward direction
   }  
-  // Creates lobster movement, speed & direction
+  // Controls lobster movement, boundaries, and if hit squid
   void move() {
     x += dx;  
     y += dy;
     counter += 1;
-    for (int i=0; i<many; i++ ) {    // Squid to bottom if lobster hit
+    // Sends squid to the bottom if lobster hits
+    for (int i=0; i<many; i++ ) {
       if (school[i].hit( x, y )) {
         caught += school[i].legs;
         school[i].bottom();
@@ -654,7 +657,7 @@ class Lobster {
   void show() {
     fill(255, 0, 0);
     noStroke();
-    ellipse( x, y, 80, 20 ); // body
+    ellipse( x, y, 80, 20 ); // Body
     // LOBSTER FACING RIGHT DIRECTION
     // Moving claws
     if (dx>0) {
